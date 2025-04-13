@@ -2,7 +2,7 @@
   "name": "deploy fast api on aws lambda",
   "version": "0.1.0",
   "bin": {
-    "deploy fast api on aws lambda": "bin/deploy fast api on aws lambda.js"
+    "deploy fast api on aws lambda": "bin/deployFastApiOnAwsLambda.js"
   },
   "scripts": {
     "build": "tsc",
