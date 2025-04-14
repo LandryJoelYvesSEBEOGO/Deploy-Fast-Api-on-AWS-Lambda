@@ -1,136 +1,136 @@
-# 🚀 Deploy Machine Learning Model as AWS Lambda Function
+# 🚀 Déployer un Modèle de Machine Learning en tant que Fonction AWS Lambda
 
-This repository contains code and infrastructure to deploy a machine learning model (BERT-based essay grading model) as a serverless AWS Lambda function using AWS CDK (Cloud Development Kit) with TypeScript.
+Ce dépôt contient le code et l'infrastructure pour déployer un modèle de machine learning (modèle de notation d'essai basé sur BERT) en tant que fonction AWS Lambda serverless, en utilisant AWS CDK (Cloud Development Kit) avec TypeScript.
 
 ---
 
-## 📌 Architecture Overview
+## 📌 Vue d'ensemble de l'Architecture
 
-The deployment workflow consists of two main parts:
+Le workflow de déploiement se compose de deux parties principales :
 
-- **Docker Build Pipeline**: Prepares the ML model and dependencies for deployment  
-- **AWS CDK Deployment**: Provisions and configures AWS resources  
+- **Pipeline de Build Docker** : Prépare le modèle ML et ses dépendances pour le déploiement  
+- **Déploiement avec AWS CDK** : Provisionne et configure les ressources AWS  
 
 ![Architecture](./docs/deployment_workflow.png)
 
 ---
 
-## ✅ Prerequisites
+## ✅ Prérequis
 
-- Node.js (v18.x or higher)  
-- AWS CLI configured with appropriate credentials  
-- AWS CDK installed (`npm install -g aws-cdk`)  
-- Docker installed and running  
-- Python 3.11 installed (for local testing)  
+- Node.js (v18.x ou supérieur)  
+- AWS CLI configuré avec les identifiants appropriés  
+- AWS CDK installé (`npm install -g aws-cdk`)  
+- Docker installé et en cours d'exécution  
+- Python 3.11 installé (pour les tests locaux)  
 
 ---
 
-## 🗂️ Project Structure
+## 🗂️ Structure du Projet
 
 ```bash
-├── bin/                   # CDK application entry point
-├── lib/                   # CDK stack definition
-├── image/                 # Docker image files
-│   ├── Dockerfile         # Multi-stage Dockerfile for Lambda deployment
-│   ├── requirements.txt   # Python dependencies
-│   └── src/               # Python source code
-│       └── main.py        # Lambda handler function
-├── test/                  # Test files for CDK stack
-├── cdk.json               # CDK configuration
-├── tsconfig.json          # TypeScript configuration
-├── package.json           # Node.js dependencies
-└── README.md              # This file
+├── bin/                   # Point d'entrée de l'application CDK
+├── lib/                   # Définition de la stack CDK
+├── image/                 # Fichiers de l'image Docker
+│   ├── Dockerfile         # Dockerfile multi-étapes pour le déploiement Lambda
+│   ├── requirements.txt   # Dépendances Python
+│   └── src/               # Code source Python
+│       └── main.py        # Fonction handler Lambda
+├── test/                  # Fichiers de test pour la stack CDK
+├── cdk.json               # Configuration CDK
+├── tsconfig.json          # Configuration TypeScript
+├── package.json           # Dépendances Node.js
+└── README.md              # Ce fichier
 ```
 
 ---
 
-## 🐳 ML Model Docker Build Pipeline
+## 🐳 Pipeline de Build Docker du Modèle ML
 
-The Docker build pipeline prepares your ML model for deployment:
+La pipeline de build Docker prépare votre modèle ML pour le déploiement :
 
-1. **Dataset**: Raw data used for model training  
-2. **Data Processing**: Cleans and prepares the data  
-3. **Model Training**: Trains the BERT-based essay grading model  
-4. **Final Model Export**: Exports the model in `.h5` format  
-5. **Docker Image**: Packages the model with its dependencies  
+1. **Jeu de données** : Données brutes utilisées pour l'entraînement du modèle  
+2. **Traitement des données** : Nettoie et prépare les données  
+3. **Entraînement du modèle** : Entraîne le modèle de notation d'essai basé sur BERT  
+4. **Export final du modèle** : Exporte le modèle au format `.h5`  
+5. **Image Docker** : Emballe le modèle avec ses dépendances  
 
-The Dockerfile uses a **multi-stage build process** to optimize image size:
+Le Dockerfile utilise un **processus de build multi-étapes** afin d'optimiser la taille de l'image :
 
-- **Stage 1**: Builds dependencies and downloads NLTK data  
-- **Stage 2**: Creates a minimal runtime image with only necessary components  
-
----
-
-## ☁️ AWS CDK Deployment Process
-
-### 🔧 CDK Bootstrap  
-Creates necessary AWS resources for CDK deployment:
-
-- S3 bucket for assets  
-- IAM roles for deployment  
-
-### 📦 Define Resources  
-Configures the Lambda function:
-
-- **Memory allocation**: 3008 MB  
-- **Timeout**: 180 seconds  
-- **Architecture**: `x86_64`  
-- **Ephemeral storage**: 10 GB  
-
-### 🚀 CDK Deploy  
-
-- Uploads Docker image to **AWS ECR**  
-- Creates the Lambda function  
-- Configures function URL with **CORS** settings  
+- **Étape 1** : Compile les dépendances et télécharge les données NLTK  
+- **Étape 2** : Crée une image d'exécution minimale ne contenant que les composants nécessaires  
 
 ---
 
-## ⚙️ Setup and Deployment
+## ☁️ Processus de Déploiement avec AWS CDK
 
-### 1. Install dependencies
+### 🔧 Initialisation CDK  
+Crée les ressources AWS nécessaires pour le déploiement via CDK :
+
+- Bucket S3 pour les assets  
+- Rôles IAM pour le déploiement  
+
+### 📦 Définition des Ressources  
+Configure la fonction Lambda :
+
+- **Allocation mémoire** : 3008 MB  
+- **Timeout** : 180 secondes  
+- **Architecture** : `x86_64`  
+- **Stockage éphémère** : 10 GB  
+
+### 🚀 Déploiement CDK  
+
+- Télécharge l'image Docker sur **AWS ECR**  
+- Crée la fonction Lambda  
+- Configure l'URL de la fonction avec les réglages **CORS**  
+
+---
+
+## ⚙️ Installation et Déploiement
+
+### 1. Installer les dépendances
 
 ```bash
 npm install
 ```
 
-### 2. Prepare your ML model
+### 2. Préparer votre modèle ML
 
-Ensure your models are placed in the correct directories:
+Assurez-vous que vos modèles sont placés dans les répertoires appropriés :
 
 ```
 image/models/bert-tokenizer/
 image/models/bert-model/
 ```
 
-TensorFlow model should be placed at:
+Le modèle TensorFlow doit être placé à :
 
 ```bash
 /var/task/aes_model.h5
 ```
 
-### 3. Bootstrap CDK (first-time only)
+### 3. Initialiser CDK (première utilisation)
 
 ```bash
 npx cdk bootstrap
 ```
 
-### 4. Deploy the stack
+### 4. Déployer la stack
 
 ```bash
 npx cdk deploy
 ```
 
-After deployment, the Lambda function URL will be displayed in the output.
+Après le déploiement, l'URL de la fonction Lambda s'affichera dans la sortie.
 
 ---
 
-## 🧪 Testing the Deployed Function
+## 🧪 Tester la Fonction Déployée
 
 ```bash
-curl -X POST   -H "Content-Type: application/json"   -d '{"text": "This is a sample essay to grade."}'   <FUNCTION_URL>
+curl -X POST   -H "Content-Type: application/json"   -d '{"text": "Ceci est un essai pour être noté."}'   <FUNCTION_URL>
 ```
 
-### ✅ Example Response
+### ✅ Réponse Exemple
 
 ```json
 {
@@ -143,42 +143,42 @@ curl -X POST   -H "Content-Type: application/json"   -d '{"text": "This is a sam
 
 ---
 
-## 🔍 Lambda Function Details
+## 🔍 Détails de la Fonction Lambda
 
-The Lambda function performs the following steps:
+La fonction Lambda exécute les étapes suivantes :
 
-- Initializes the BERT tokenizer, BERT model, and grading model  
-- Cleans and preprocesses the input essay text  
-- Generates BERT embeddings for the essay  
-- Resizes embeddings to match input size  
-- Makes a prediction using the grading model  
-- Returns the predicted score  
-
----
-
-## 🧠 Performance Considerations
-
-- **Memory**: 3008 MB  
-- **Timeout**: 180 seconds  
-- **Note**: Cold starts may take longer  
-- **Warm Containers**: Subsequent invocations are faster  
+- Initialise le tokenizer BERT, le modèle BERT et le modèle de notation  
+- Nettoie et prétraite le texte de l'essai  
+- Génère des embeddings BERT pour l'essai  
+- Redimensionne les embeddings pour correspondre à la taille d'entrée attendue  
+- Effectue une prédiction avec le modèle de notation  
+- Retourne le score prédit  
 
 ---
 
-## 🔧 Customization
+## 🧠 Considérations de Performance
 
-### Modifying Memory and Timeout  
-In `lib/DeployFastApiOnAwsLambdaStack.ts`:
+- **Mémoire** : 3008 MB  
+- **Timeout** : 180 secondes  
+- **Remarque** : Les démarrages à froid peuvent être plus lents  
+- **Containers chauds** : Les invocations suivantes sont plus rapides
+
+---
+
+## 🔧 Personnalisation
+
+### Modification de la Mémoire et du Timeout  
+Dans `lib/DeployFastApiOnAwsLambdaStack.ts` :
 
 ```ts
 const dockerFunc = new lambda.DockerImageFunction(this, "DockerFunc", {
-  memorySize: 4096,  // in MB
+  memorySize: 4096,  // en MB
   timeout: cdk.Duration.seconds(240),
   // ...
 });
 ```
 
-### Adding API Gateway
+### Ajout d'une API Gateway
 
 ```ts
 import * as apigw from 'aws-cdk-lib/aws-apigateway';
@@ -195,7 +195,7 @@ predictResource.addMethod('POST');
 
 ---
 
-## 🧹 Cleanup
+## 🧹 Nettoyage
 
 ```bash
 npx cdk destroy
@@ -203,28 +203,19 @@ npx cdk destroy
 
 ---
 
-## 💰 Cost Optimization
+## 💰 Optimisation des Coûts
 
-- Charged based on memory and execution time  
-- Lambda container images stored in **Amazon ECR**  
-- Use **provisioned concurrency** for performance-critical workloads  
-
----
-
-## 📚 Additional Resources
-
-- [AWS Lambda Best Practices](https://docs.aws.amazon.com/lambda/latest/dg/best-practices.html)  
-- [AWS CDK Documentation](https://docs.aws.amazon.com/cdk/)  
-- [Machine Learning on AWS Lambda](https://aws.amazon.com/blogs/machine-learning/)  
+- Facturation basée sur la mémoire et le temps d'exécution  
+- Les images des conteneurs Lambda sont stockées dans **Amazon ECR**  
+- Utilisez la **concurrence provisionnée** pour les charges de travail critiques en termes de performance
 
 ---
 
-## 📜 License
+## 📚 Ressources Complémentaires
 
-MIT
+- [Bonnes Pratiques AWS Lambda](https://docs.aws.amazon.com/lambda/latest/dg/best-practices.html)  
+- [Documentation AWS CDK](https://docs.aws.amazon.com/cdk/)  
+- [Machine Learning sur AWS Lambda](https://aws.amazon.com/blogs/machine-learning/)  
+- [Tutoriel](https://youtu.be/RGIM4JfsSk0/)
 
 ---
-
-## 🤝 Contributing
-
-Contributions are welcome! Feel free to submit a Pull Request.
