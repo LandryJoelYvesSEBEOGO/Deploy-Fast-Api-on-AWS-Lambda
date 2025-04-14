@@ -1,4 +1,4 @@
-# 🚀 Déployer un Modèle de Machine Learning en tant que Fonction AWS Lambda
+# 🚀 Déployer un Modèle DL de Notation de Dissertation en tant que Fonction AWS Lambda
 
 Ce dépôt contient le code et l'infrastructure pour déployer un modèle de machine learning (modèle de notation d'essai basé sur BERT) en tant que fonction AWS Lambda serverless, en utilisant AWS CDK (Cloud Development Kit) avec TypeScript.
 
