@@ -29,11 +29,17 @@ The deployment workflow consists of two main parts:
 
 <pre> ```bash 
 ├── bin/ # CDK application entry point 
-├── lib/ # CDK stack definition ├── image/ # Docker image files │ ├── Dockerfile # Multi-stage Dockerfile for Lambda deployment │ ├── requirements.txt # Python dependencies │ └── src/ # Python source code │ └── main.py # Lambda handler function ├── test/ # Test files for CDK stack ├── cdk.json # CDK configuration ├── tsconfig.json # TypeScript configuration ├── package.json # Node.js dependencies └── README.md # This file ``` </pre>
-
-yaml
-Copier
-Modifier
+├── lib/ # CDK stack definition
+├── image/ # Docker image files 
+│ ├── Dockerfile # Multi-stage Dockerfile for Lambda deployment 
+│ ├── requirements.txt # Python dependencies 
+│ └── src/ # Python source code 
+│ └── main.py # Lambda handler function 
+├── test/ # Test files for CDK stack 
+├── cdk.json # CDK configuration
+├── tsconfig.json # TypeScript configuration
+├── package.json # Node.js dependencies 
+└── README.md # This file ``` </pre>
 
 ---
 
