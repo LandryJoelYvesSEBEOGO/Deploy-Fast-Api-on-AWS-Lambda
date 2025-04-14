@@ -9,7 +9,7 @@ Ce dépôt contient le code et l'infrastructure pour déployer un modèle de mac
 Le workflow de déploiement se compose de deux parties principales :
 
 - **Pipeline de Build Docker** : Prépare le modèle ML et ses dépendances pour le déploiement  
-- **Déploiement avec AWS CDK** : Provisionne et configure les ressources AWS  
+- **Déploiement avec AWS CDK** : configure les ressources AWS et garantie un deploiement  a partir du code qui soit rapide 
 
 ![Architecture](./docs/deployment_workflow.png)
 
@@ -48,9 +48,9 @@ Le workflow de déploiement se compose de deux parties principales :
 
 La pipeline de build Docker prépare votre modèle ML pour le déploiement :
 
-1. **Jeu de données** : Données brutes utilisées pour l'entraînement du modèle  
-2. **Traitement des données** : Nettoie et prépare les données  
-3. **Entraînement du modèle** : Entraîne le modèle de notation d'essai basé sur BERT  
+1. **Dataset** : Données brutes utilisées pour l'entraînement du modèle  
+2. **Data Processinge** : Nettoie et prépare les données  
+3. **Model training** : Entraîne le modèle de notation de dissertation basé sur BERT  
 4. **Export final du modèle** : Exporte le modèle au format `.h5`  
 5. **Image Docker** : Emballe le modèle avec ses dépendances  
 
@@ -66,7 +66,7 @@ Le Dockerfile utilise un **processus de build multi-étapes** afin d'optimiser l
 ### 🔧 Initialisation CDK  
 Crée les ressources AWS nécessaires pour le déploiement via CDK :
 
-- Bucket S3 pour les assets  
+- Bucket S3 pour le stockage des élements 
 - Rôles IAM pour le déploiement  
 
 ### 📦 Définition des Ressources  
@@ -78,10 +78,12 @@ Configure la fonction Lambda :
 - **Stockage éphémère** : 10 GB  
 
 ### 🚀 Déploiement CDK  
+IL automatise le deploiement en effectuant automatiquement ces points la:
 
 - Télécharge l'image Docker sur **AWS ECR**  
 - Crée la fonction Lambda  
-- Configure l'URL de la fonction avec les réglages **CORS**  
+- Configure l'URL de la fonction avec les réglages **CORS**
+- Garantie la communication entre l'image deployer et la fonction lambda
 
 ---
 
