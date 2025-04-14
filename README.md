@@ -28,7 +28,9 @@ The deployment workflow consists of two main parts:
 ## 🗂️ Project Structure
 
 ├── bin/ # CDK application entry point
+
 ├── lib/ # CDK stack definition
+
 ├── image/ # Docker image files
 │ ├── Dockerfile # Multi-stage Dockerfile for Lambda deployment
 │ ├── requirements.txt # Python dependencies
