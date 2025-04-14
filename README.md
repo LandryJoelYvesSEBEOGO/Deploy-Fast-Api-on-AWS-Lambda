@@ -85,7 +85,7 @@ Configures the Lambda function:
 
 ### 1. Install dependencies
 ```bash
-npm install
+npm install```
 2. Prepare your ML model
 Ensure your models are placed in the correct directories:
 
