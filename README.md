@@ -11,8 +11,7 @@ Le workflow de déploiement se compose de deux parties principales :
 - **Pipeline de Build Docker** : Prépare le modèle ML et ses dépendances pour le déploiement  
 - **Déploiement avec AWS CDK** : configure les ressources AWS et garantie un deploiement  a partir du code qui soit rapide 
 
-![Architecture](Deploy-DL-model-on-AWS-Lambda/bin
-/Workflow.png)
+![Architecture](https://github.com/LandryJoelYvesSEBEOGO/Deploy-DL-model-on-AWS-Lambda/blob/main/bin/Workflow.png)
 
 ---
 
