@@ -86,29 +86,19 @@ Configures the Lambda function:
 ### 1. Install dependencies
 ```bash
 npm install```
-2. Prepare your ML model
+
+### 2. Prepare your ML model
 Ensure your models are placed in the correct directories:
+- image/models/bert-tokenizer/
+- image/models/bert-model/
+TensorFlow model should be placed at: /var/task/aes_model.h5
 
-arduino
-Copier
-Modifier
-image/models/bert-tokenizer/
-image/models/bert-model/
-TensorFlow model should be placed at:
+### 3. Bootstrap CDK (first-time only)
+```bash
+npx cdk bootstrap```
 
-bash
-Copier
-Modifier
-/var/task/aes_model.h5
-3. Bootstrap CDK (first-time only)
-bash
-Copier
-Modifier
-npx cdk bootstrap
-4. Deploy the stack
-bash
-Copier
-Modifier
+### 4. Deploy the stack
+
 npx cdk deploy
 After deployment, the Lambda function URL will be displayed in the output.
 
